@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+
+    "target": "es2017",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "isolatedModules": false,
+    "strict": true,
+    "noImplicitAny": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "declaration": true,
+    "removeComments": false,
+    "noLib": false,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "outDir": "./dist"
+  },
+  "compileOnSave": true,
+  "buildOnSave": true,
+  "exclude": [
+    "dist",
+    "node_modules",
+    "streamops"
+  ]
+}
