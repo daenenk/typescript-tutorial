@@ -1,4 +1,4 @@
-type Animal = { tag: "snake", length: number } | { tag: "horse", legs: number } 
+type Animal = { tag: "snake", length: number } | { tag: "horse", legs: number }
 
 function printAnimalInfo(animal: Animal) {
   switch (animal.tag) {
@@ -11,15 +11,19 @@ function printAnimalInfo(animal: Animal) {
   }
 }
 
+
 type Either<L, R> =
   { left: L }
   | { right: R }
 
-function doWithEither<T>(either: Either<{ a: number }, T>): number | T {
+function getValue<T>(either: Either<T, { value: T }>): T {
   if ("left" in either) {
-    return either.left.a - 1
+    return either.left
   } else {
-    return either.right
+    return either.right.value
   }
 }
+
+getValue({ left: 42 });                // returns 42
+getValue({ right: { value: 99 } });    // returns 99
 

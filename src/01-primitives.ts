@@ -1,22 +1,25 @@
 namespace Primitives {
-  let v1: number = 1;
-  let va: string = "a";
-  let vf: boolean = false;
 
-  let v2 = 2;                      // What is the type of v2 ?
-  let vb = "b";                    // What is the type of vb ?
-  let vt = true;                   // What is the type of vt ?
+  let language: string = "TypeScript";
+  let flag: boolean = false;  
 
-  v2 = NaN;                        // vale NaN ('Not a Number') has type number!
-  v2 = Infinity;                   // vale Infinity has type number!
+  flag = 1;                          // Type error! must be boolean
 
-  v2 = "2";                        // Type error!
+  // both integers and floating point numbers are of type 'number'
+  let year: number = 2024;
+  year = year + 1;                   // This pure JavaScript, valid in TypeScript, if the types match.
+  let pi: number = 3.14;    
 
-  const c1: number = 1;
-  const ca: string = "a";
-  const c2 = 2;                    // What is the type of c2 ?
-  const cb = "b";                  // What is the type of cb ?
-  const ct = true;                 // What is the type of ct ?
+  // The explicit type annotation is optional if a variable is initialized at the time of declaration.
+  let name = "Tom";                  // type inferred as string
+ 
+  let dividedByZero: number = NaN;   // the value NaN ('Not a Number') has type number!
+  let veryBig: number = Infinity;    // the value Infinity has type number!
 
-  c2 = 1;                          // Error: a constant cannot be re-assigned!
+  // const creates an immutable bindings, the type inference narrows the type to the literal type
+  const two = 2;                     // What is the type of two ?
+  const b = "b";                     // What is the type of b ?
+  const truth = true;                // What is the type truth  ?
+  const wrong: false = true;         // Type error! 
+
 }

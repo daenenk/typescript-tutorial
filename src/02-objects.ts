@@ -1,65 +1,66 @@
 export namespace Objects {
-  // Array
-  let vabc = ["a", "b", "c"];      // What is the type of vab ?
-  const cabc = ["a", "b", "c"];    // What is the type of cab ?
 
-  const array: Array<number> = [1, 2, 3]; // Array the interface of arrays
+  // JavaScript has a unified object model where primitive values
+  // can be wrapped in object types to provide properties and methods.
+  // TypeScript follows this model. 
+  // However, it is uncommon to use the object types directly in TypeScript.
+  let language: String = new String("TypeScript");  // String with uppercase is the object type
+  let flag: Boolean = new Boolean(false); 
+  let year: Number = new Number(2024);
+  let yearObject: object = new Number(2024);
 
-  // Object
-  export let obj: object = {       // export makes declaration importable
+  // Arrays are objects as well
+  let abc: string[] = ["a", "b", "c"];   
+  let arrayObject: object = ["a", "b", "c"];
+
+  // Structural objects
+  let struct: object = {  
     a: 0,
     b: 1
   }
 
-  obj.a = 3;                       // Why do I get an error?
+  struct.a = 3;                     // Why do I get an error?
 
-  // object is a type
-  // Object is a function (and an object) of type ObjectConstructor
-  // Object is also an interface
-
-  let objab = {
-    a: 0,
-    b: 1
+  let person = {
+    name: "Tom",
+    age: 42
   }
 
-  objab.a = 3;                     // No error, Why?
-  objab.b = "b";                   // Why do I get an error?
-  objab.c = 3;                     // Why do I get an error?
+  person.age = 24;                 // No error, Why?
+  person.age = "old";              // Why do I get an error?
+  person.gender = "M";             // Why do I get an error?
 
-  export let rec: Record<string, number> = {
-    a: 0,
-    b: 1
+  type Named = {
+    name: string
+  } 
+
+  const named: Named = person;  // Structural typing, person has all properties required by Named
+
+  interface HasAge {
+    age: number
   }
 
-  rec.a = 3;
-  rec.b = "b";                     // Why do I get an error?
-  rec.c = 3;                       // No error, Why?
+  const hasAge: HasAge = person; // Structural typing, person has all properties required by HasAge
 
-  let o = {
-    a: 1,
-    b: 2,
-    c: 3
+  // Both type aliases and interfaces support structural typing,
+  // can be used for type annotations and to implement classes.
+  // Interfaces can be extended, and preferred for public APIs and pure abstract classes.
+
+  // class instances are structural objects as well
+  class Person  {
+    constructor(public name: string, public age: number) { }
   }
 
-  delete o.c;                       // .c is mandatory
+  const p: Named = new Person("Alice", 30); // Structural typing, Person has all properties required by Named
 
-  type O = {
-    a: number,
-    b: number,
-    c?: number
-  }
+  // Tuples are structural objects as well
 
-  let oo: O = {
-    a: 1,
-    b: 2,
-    c: 3
-  }
+  const tuple = ["Tom", 33] as const; // readonly tuple
+  let pair: [string, number] = ["Tom", 33]; // mutable tuple  
 
-  delete oo.c;                      // .c is optional
+  type Headed = { 0: string }
+  type Aged = { 1: number }
+  const headed: Headed = ["Tom", 42] as const; // Arrays are structural objects as well. 
+  const aged: Aged = ["Tom", 42] as const;
 
-  // Note the difference; type inference of let differs from const
-  let a = "a";
-  o[a];
-  const b = "b";
-  o[b];
 }
