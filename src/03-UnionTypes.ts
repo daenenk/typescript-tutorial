@@ -1,10 +1,10 @@
 
 namespace UnionTypes {
 
-  type NumnerOrString = number | string;
-  const array: NumnerOrString[] = [0, "b", 2, "d"];
+  type NumberOrString = number | string;
+  const array: NumberOrString[] = [0, "b", 2, "d"];
 
-  function either(cond: boolean): NumnerOrString {
+  function either(cond: boolean): NumberOrString {
     if (cond) {
       return 42;
     } else {

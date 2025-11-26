@@ -1,4 +1,6 @@
-type Animal = { tag: "snake", length: number } | { tag: "horse", legs: number }
+type Snake = { tag: "snake", length: number } 
+type Horse =  { tag: "horse", legs: number }
+type Animal = Snake | Horse
 
 function printAnimalInfo(animal: Animal) {
   switch (animal.tag) {

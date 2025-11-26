@@ -6,6 +6,8 @@ namespace JSstyleExample {
   }
 
   let sum = add(1, 2);           // What is the type of sum ?
+  let appended = add("a", "b");
+  let APPENDED = appended.toUpperCase();
   let SUM = sum.toUpperCase();   // Will this work at runtime ?
 
   function unsafeAdd(a: unknown, b: unknown): unknown {

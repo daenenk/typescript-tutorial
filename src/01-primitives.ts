@@ -6,6 +6,7 @@ namespace Primitives {
   flag = 1;                          // Type error! must be boolean
 
   // both integers and floating point numbers are of type 'number'
+  // a double-precision 64-bit binary format IEEE 754 value, like double in Java or C#
   let year: number = 2024;
   year = year + 1;                   // This pure JavaScript, valid in TypeScript, if the types match.
   let pi: number = 3.14;    

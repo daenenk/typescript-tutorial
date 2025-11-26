@@ -17,12 +17,12 @@ interface EBike extends Bike {
 
 // Output is an interface with a type parameter.
 interface Output<T> {
-  emit(msg: T): void;
+  emit(item: T): void;
 }
 
 // I wrap my examples in a function, so I can assume instances without defining a constructor.
 
-function example1(bikeOut: Output<Bike>, v: Vehicle, b: Bike, eb: EBike) {
+function example1(bikeOut: Output<Bike>, b: Bike, eb: EBike, v: Vehicle) {
   // This is what you expect
   bikeOut.emit(b);
   bikeOut.emit(eb);
@@ -31,45 +31,43 @@ function example1(bikeOut: Output<Bike>, v: Vehicle, b: Bike, eb: EBike) {
 
 // Now I'll misuse the way covariance is defined in TypeScript.
 
-function produce<T extends Vehicle>(create: () => T, out: Output<T>) {
-  const t: T = create();
-  out.emit(t);
+function send<T extends Vehicle>(item: T, out: Output<T>) {
+  out.emit(item);
 }
 
 function example2(bikeOut: Output<Bike>, v: Vehicle, b: Bike, eb: EBike) {
-  produce(() => b, bikeOut);  // T inferred as Bike
-  produce(() => eb, bikeOut); // T inferred as EBike
-  produce(() => v, bikeOut);  // T inferred as Vehicle, acceptance of bikeOut is unsound.
+  send(b, bikeOut);  // T inferred as Bike
+  send(eb, bikeOut); // T inferred as Bike
+  send(v, bikeOut);  // T inferred as Vehicle, acceptance of bikeOut is unsound.
 
   // bikeOut is considered as assignable to Output<Vehicle>.
   // Covariance in TypeScript permits the call signature in an object
   // to be either covariant ot contravariant.
 
-  // While directly on function such assignment is not allowed
-  const emit: ((msg: Vehicle) => void) = (msg: Bike) => { }
-  // wrapped in an interface the rule are weaker.
+  // We can also show the unsoundness with
+  const emit: ((item: Vehicle) => void) = (item: Bike) => { console.log(item.breakType) }
   const vout: Output<Vehicle> = bikeOut;
   const ebout: Output<EBike> = bikeOut;
 }
 
 interface Intput<T> {
-  on(handle: (msg: T) => void): void;
+  on(handle: (item: T) => void): void;
 }
 
-function example3(bikeIn: Intput<Bike>)  {
+function example3(bikeIn: Intput<Bike>) {
   bikeIn.on((bike: Bike) => { console.log(bike.breakType) });
 
   const vIn: Intput<Vehicle> = bikeIn;           // Possible because Intput is covariant in T.
   vIn.on((v: Vehicle) => { console.log(v.nbrOfWheels) });
 
   const ebIn: Intput<EBike> = bikeIn;            // Error: Type 'Intput<Bike>' is not assignable to type 'Intput<EBike>'.
-}  
+}
 
-interface InOut<T> extends Intput<T>, Output<T> { }
+interface TransportChannel<T> extends Intput<T>, Output<T> { }
 
-function example4(bikeInOut: InOut<Bike>) {
-  const vio: InOut<Vehicle> = bikeInOut;
-  const ebio: InOut<EBike> = bikeInOut; // Error: Type 'InOut<Bike>' is not assignable to type 'InOut<EBike>'.  
+function example4(bikeChan: TransportChannel<Bike>) {
+  const vChan: TransportChannel<Vehicle> = bikeChan;
+  const ebChan: TransportChannel<EBike> = bikeChan; // Error: Type 'TransportChannel<Bike>' is not assignable to type 'TransportChannel<EBike>'.  
 }
 
 // While Input/Output could be seen in the context of producer/consumer and immutable message passing
@@ -82,7 +80,7 @@ interface Gettable<T> {
 
 interface Settable<T> {
   set(value: T): void;
-} 
+}
 
 interface Store<T> extends Gettable<T>, Settable<T> { }
 
@@ -115,13 +113,13 @@ interface WithMutableField<T> {
  */
 
 // Same is true for arrays
-function example6(bikes: Array<Bike>) {
+function example6(bikes: Bike[]) {
   const vs: Array<Vehicle> = bikes; // accepted, though unsound.
   const ebs: Array<EBike> = bikes;  // Error: Type 'Array<Bike>' is not assignable to type 'Array<EBike>'.  
 }
 
-function example7(){
-  const array = [ 1 , 2, 3 ];
+function example7() {
+  const array = [1, 2, 3];
   (array as Array<string>)[0].toUpperCase(); // Error: Conversion of type 'number[]' to type 'string[]' may be a mistake
   (array as Array<number | string> as Array<string>)[0].toUpperCase(); // Error at runtime: toUpperCase is not a function
 }
