@@ -2,7 +2,6 @@ namespace Primitives {
 
   let language: string = "TypeScript";
   let flag: boolean = false;  
-
   flag = 1;                          // Type error! must be boolean
 
   // both integers and floating point numbers are of type 'number'
